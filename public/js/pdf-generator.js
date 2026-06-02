@@ -49,70 +49,51 @@ class PDFGenerator {
     }
     
     static getInvoiceHTML(invoice) {
-        const products = getFromStorage(storageKeys.products) || [];
-        const product = products.find(p => p.id === invoice.productId);
-        
         return `
             <div style="font-family: Arial, sans-serif; padding: 40px; background: white;">
-                <style>
-                    body { margin: 0; padding: 0; }
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { padding: 10px; text-align: left; }
-                    .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3498db; padding-bottom: 20px; }
-                    .logo { height: 80px; margin-bottom: 10px; }
-                    .company-name { font-size: 24px; color: #2c3e50; font-weight: bold; }
-                    .invoice-title { font-size: 28px; color: #3498db; margin: 10px 0; }
-                    .invoice-number { color: #7f8c8d; font-size: 14px; }
-                    .section-header { background-color: #34495e; color: white; font-weight: bold; }
-                    .section-title { font-weight: bold; margin-top: 20px; margin-bottom: 10px; color: #2c3e50; }
-                    .info-row { margin-bottom: 8px; }
-                    .total-row { background-color: #f9f9f9; font-weight: bold; font-size: 16px; }
-                    .footer { margin-top: 30px; text-align: center; color: #95a5a6; font-size: 12px; border-top: 1px solid #ecf0f1; padding-top: 20px; }
-                </style>
-                
-                <div class="header">
-                    <img src="public/logos/logo.png" alt="Logo" class="logo">
-                    <div class="company-name">Prestige Bali</div>
-                    <div class="invoice-title">INVOICE</div>
-                    <div class="invoice-number">${invoice.invoiceNumber}</div>
+                <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3498db; padding-bottom: 20px;">
+                    <img src="public/logos/logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
+                    <div style="font-size: 24px; color: #2c3e50; font-weight: bold;">Prestige Bali</div>
+                    <div style="font-size: 28px; color: #3498db; margin: 10px 0;">INVOICE</div>
+                    <div style="color: #7f8c8d; font-size: 14px;">${invoice.invoiceNumber}</div>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
                     <div>
-                        <div class="section-title">Bill To:</div>
-                        <div class="info-row"><strong>${invoice.clientName}</strong></div>
-                        ${invoice.email ? `<div class="info-row">${invoice.email}</div>` : ''}
+                        <div style="font-weight: bold; margin-bottom: 10px;">Bill To:</div>
+                        <p style="margin: 5px 0;"><strong>${invoice.clientName}</strong></p>
+                        ${invoice.email ? `<p style="margin: 5px 0;">${invoice.email}</p>` : ''}
                     </div>
                     <div>
-                        <div class="info-row"><strong>Invoice Date:</strong> ${formatDate(invoice.createdAt)}</div>
-                        <div class="info-row"><strong>Due Date:</strong> ${formatDate(invoice.dueDate)}</div>
-                        <div class="info-row"><strong>Payment Status:</strong> ${invoice.paymentStatus.toUpperCase()}</div>
-                        <div class="info-row"><strong>Payment Method:</strong> ${invoice.paymentMethod}</div>
+                        <p style="margin: 5px 0;"><strong>Invoice Date:</strong> ${formatDate(invoice.createdAt)}</p>
+                        <p style="margin: 5px 0;"><strong>Due Date:</strong> ${formatDate(invoice.dueDate)}</p>
+                        <p style="margin: 5px 0;"><strong>Payment Status:</strong> ${invoice.paymentStatus.toUpperCase()}</p>
+                        <p style="margin: 5px 0;"><strong>Payment Method:</strong> ${invoice.paymentMethod}</p>
                     </div>
                 </div>
                 
-                <table>
+                <table style="width: 100%; margin: 30px 0; border-collapse: collapse;">
                     <thead>
-                        <tr class="section-header">
-                            <th>Description</th>
-                            <th style="text-align: right;">Amount</th>
+                        <tr style="background-color: #34495e; color: white;">
+                            <th style="padding: 12px; text-align: left;">Description</th>
+                            <th style="padding: 12px; text-align: right;">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Invoice Amount</td>
-                            <td style="text-align: right;">${formatCurrency(invoice.amount || 0)}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #bdc3c7;">Invoice Amount</td>
+                            <td style="padding: 12px; text-align: right; border-bottom: 1px solid #bdc3c7; font-weight: bold;">${formatCurrency(invoice.amount || 0)}</td>
                         </tr>
-                        <tr class="total-row">
-                            <td>TOTAL DUE</td>
-                            <td style="text-align: right; color: #e74c3c;">${formatCurrency(invoice.amount || 0)}</td>
+                        <tr style="background: #f9f9f9;">
+                            <td style="padding: 12px; font-weight: bold;">TOTAL DUE</td>
+                            <td style="padding: 12px; text-align: right; font-weight: bold; color: #3498db; font-size: 16px;">${formatCurrency(invoice.amount || 0)}</td>
                         </tr>
                     </tbody>
                 </table>
                 
-                ${invoice.notes ? `<div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 5px;"><strong>Notes:</strong> ${invoice.notes}</div>` : ''}
+                ${invoice.notes ? `<div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;"><strong>Notes:</strong> ${invoice.notes}</div>` : ''}
                 
-                <div class="footer">
+                <div style="text-align: center; margin-top: 30px; color: #95a5a6; font-size: 12px;">
                     <p>Thank you for your business!</p>
                     <p>Generated on ${formatDate(new Date())}</p>
                 </div>
@@ -123,77 +104,53 @@ class PDFGenerator {
     static getQuotationHTML(quotation) {
         const products = getFromStorage(storageKeys.products) || [];
         const product = products.find(p => p.id === quotation.productId);
-        const pricings = getFromStorage(storageKeys.pricing) || [];
-        const pricing = pricings.find(p => p.id === quotation.pricingId);
-        const totalPrice = pricing ? (pricing.pricePerPerson * quotation.persons * (1 - pricing.discount / 100)) : 0;
         
         return `
             <div style="font-family: Arial, sans-serif; padding: 40px; background: white;">
-                <style>
-                    body { margin: 0; padding: 0; }
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { padding: 10px; text-align: left; }
-                    .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3498db; padding-bottom: 20px; }
-                    .logo { height: 80px; margin-bottom: 10px; }
-                    .company-name { font-size: 24px; color: #2c3e50; font-weight: bold; }
-                    .quotation-title { font-size: 28px; color: #3498db; margin: 10px 0; }
-                    .quotation-number { color: #7f8c8d; font-size: 14px; }
-                    .section-header { background-color: #34495e; color: white; font-weight: bold; }
-                    .section-title { font-weight: bold; margin-top: 20px; margin-bottom: 10px; color: #2c3e50; }
-                    .info-row { margin-bottom: 8px; }
-                    .total-row { background-color: #f0f0f0; font-weight: bold; font-size: 16px; }
-                    .footer { margin-top: 30px; text-align: center; color: #95a5a6; font-size: 12px; border-top: 1px solid #ecf0f1; padding-top: 20px; }
-                </style>
-                
-                <div class="header">
-                    <img src="public/logos/logo.png" alt="Logo" class="logo">
-                    <div class="company-name">Prestige Bali</div>
-                    <div class="quotation-title">QUOTATION</div>
-                    <div class="quotation-number">${quotation.quotationNumber}</div>
+                <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3498db; padding-bottom: 20px;">
+                    <img src="public/logos/logo.png" alt="Logo" style="height: 80px; margin-bottom: 10px;">
+                    <div style="font-size: 24px; color: #2c3e50; font-weight: bold;">Prestige Bali</div>
+                    <div style="font-size: 28px; color: #3498db; margin: 10px 0;">QUOTATION</div>
+                    <div style="color: #7f8c8d; font-size: 14px;">${quotation.quotationNumber}</div>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
                     <div>
-                        <div class="section-title">Bill To:</div>
-                        <div class="info-row"><strong>${quotation.clientName}</strong></div>
-                        ${quotation.company ? `<div class="info-row">${quotation.company}</div>` : ''}
-                        ${quotation.email ? `<div class="info-row">${quotation.email}</div>` : ''}
-                        ${quotation.phone ? `<div class="info-row">${quotation.phone}</div>` : ''}
+                        <div style="font-weight: bold; margin-bottom: 10px;">Bill To:</div>
+                        <p style="margin: 5px 0;"><strong>${quotation.clientName}</strong></p>
+                        ${quotation.company ? `<p style="margin: 5px 0;">${quotation.company}</p>` : ''}
+                        ${quotation.email ? `<p style="margin: 5px 0;">${quotation.email}</p>` : ''}
+                        ${quotation.phone ? `<p style="margin: 5px 0;">${quotation.phone}</p>` : ''}
                     </div>
                     <div>
-                        <div class="info-row"><strong>Quotation Date:</strong> ${formatDate(quotation.createdAt)}</div>
-                        <div class="info-row"><strong>Valid Until:</strong> ${formatDate(quotation.validUntil)}</div>
-                        <div class="info-row"><strong>Status:</strong> ${quotation.status.toUpperCase()}</div>
+                        <p style="margin: 5px 0;"><strong>Quotation Date:</strong> ${formatDate(quotation.createdAt)}</p>
+                        <p style="margin: 5px 0;"><strong>Valid Until:</strong> ${formatDate(quotation.validUntil)}</p>
+                        <p style="margin: 5px 0;"><strong>Status:</strong> ${quotation.status.toUpperCase()}</p>
                     </div>
                 </div>
                 
-                <table>
-                    <thead>
-                        <tr class="section-header">
-                            <th>Description</th>
-                            <th style="text-align: right;">Qty</th>
-                            <th style="text-align: right;">Unit Price</th>
-                            <th style="text-align: right;">Amount</th>
+                <table style="width: 100%; margin: 20px 0;">
+                    <thead style="background-color: #34495e; color: white;">
+                        <tr>
+                            <th style="padding: 10px; text-align: left;">Description</th>
+                            <th style="padding: 10px; text-align: right;">Qty</th>
+                            <th style="padding: 10px; text-align: right;">Unit Price</th>
+                            <th style="padding: 10px; text-align: right;">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>${product?.name || 'Service'}</td>
-                            <td style="text-align: right;">${quotation.persons}</td>
-                            <td style="text-align: right;">${formatCurrency(pricing?.pricePerPerson || 0)}</td>
-                            <td style="text-align: right;">${formatCurrency(totalPrice)}</td>
-                        </tr>
-                        ${pricing?.discount ? `<tr><td colspan="3" style="text-align: right;"><strong>Discount (${pricing.discount}%):</strong></td><td style="text-align: right; color: #27ae60;">-${formatCurrency(totalPrice * (pricing.discount / 100) / (1 - pricing.discount / 100))}</td></tr>` : ''}
-                        <tr class="total-row">
-                            <td colspan="3" style="text-align: right;"><strong>TOTAL</strong></td>
-                            <td style="text-align: right; color: #3498db;">${formatCurrency(totalPrice)}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #bdc3c7;">${product?.name || 'Service'}</td>
+                            <td style="padding: 10px; text-align: right; border-bottom: 1px solid #bdc3c7;">${quotation.persons}</td>
+                            <td style="padding: 10px; text-align: right; border-bottom: 1px solid #bdc3c7;">${formatCurrency(product?.price || 0)}</td>
+                            <td style="padding: 10px; text-align: right; border-bottom: 1px solid #bdc3c7;">${formatCurrency((product?.price || 0) * quotation.persons)}</td>
                         </tr>
                     </tbody>
                 </table>
                 
-                ${quotation.notes ? `<div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 5px;"><strong>Notes:</strong> ${quotation.notes}</div>` : ''}
+                ${quotation.notes ? `<p><strong>Notes:</strong> ${quotation.notes}</p>` : ''}
                 
-                <div class="footer">
+                <div style="text-align: center; margin-top: 30px; color: #95a5a6; font-size: 12px;">
                     <p>Thank you for considering our services!</p>
                     <p>Generated on ${formatDate(new Date())}</p>
                 </div>
@@ -214,33 +171,23 @@ class PDFGenerator {
         
         return `
             <div style="font-family: Arial, sans-serif; padding: 40px; background: white;">
-                <style>
-                    body { margin: 0; padding: 0; }
-                    .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3498db; padding-bottom: 20px; }
-                    .logo { height: 80px; margin-bottom: 10px; }
-                    .company-name { font-size: 24px; color: #2c3e50; font-weight: bold; }
-                    .itinerary-title { font-size: 28px; color: #3498db; margin: 10px 0; }
-                    .section-title { font-weight: bold; margin-top: 20px; margin-bottom: 10px; color: #2c3e50; font-size: 18px; }
-                    .footer { margin-top: 30px; text-align: center; color: #95a5a6; font-size: 12px; border-top: 1px solid #ecf0f1; padding-top: 20px; }
-                </style>
-                
-                <div class="header">
-                    <img src="public/logos/logo.png" alt="Logo" class="logo">
-                    <div class="company-name">Prestige Bali</div>
-                    <div class="itinerary-title">ITINERARY</div>
+                <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #3498db; padding: 30px 0; padding-bottom: 20px;">
+                    <img src="public/logos/logo.png" alt="Logo" style="height: 80px; margin-bottom: 15px;">
+                    <div style="font-size: 24px; color: #2c3e50; font-weight: bold;">Prestige Bali</div>
+                    <h1 style="margin: 10px 0; color: #3498db;">${itinerary.title}</h1>
+                    <p style="color: #3498db;">ITINERARY</p>
                 </div>
                 
                 <div style="background: #f9f9f9; padding: 20px; border-radius: 5px; margin-bottom: 30px;">
-                    <h2 style="margin-top: 0; color: #2c3e50;">${itinerary.title}</h2>
                     <p><strong>Duration:</strong> ${itinerary.duration} days</p>
                     <p><strong>Tour Package:</strong> ${product?.name || 'N/A'}</p>
                     <p><strong>Description:</strong> ${itinerary.description}</p>
                 </div>
                 
-                <div class="section-title">Daily Activities</div>
+                <h3 style="margin-top: 30px; margin-bottom: 20px; color: #2c3e50;">Daily Activities</h3>
                 ${daysHTML}
                 
-                <div class="footer">
+                <div style="text-align: center; margin-top: 30px; color: #95a5a6; font-size: 12px; border-top: 1px solid #ecf0f1; padding-top: 20px;">
                     <p>We look forward to welcoming you!</p>
                     <p>Generated on ${formatDate(new Date())}</p>
                 </div>
