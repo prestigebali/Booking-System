@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking System - Tour Management</title>
+    <link rel="stylesheet" href="public/css/styles.css">
+    <link rel="stylesheet" href="public/css/menu.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" />
+    <!-- html2pdf for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- EmailJS for email support -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="public/logos/logo.png" alt="Booking System Logo" class="logo">
+            <span class="brand-name">Booking System</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#dashboard" class="nav-link active" onclick="showPage('dashboard')">Dashboard</a></li>
+            <li><a href="#products" class="nav-link" onclick="showPage('products')">Products</a></li>
+            <li><a href="#pricing" class="nav-link" onclick="showPage('pricing')">Pricing</a></li>
+            <li><a href="#calendar" class="nav-link" onclick="showPage('calendar')">Calendar</a></li>
+            <li><a href="#itinerary" class="nav-link" onclick="showPage('itinerary')">Itinerary Builder</a></li>
+            <li><a href="#quotation" class="nav-link" onclick="showPage('quotation')">Quotation</a></li>
+            <li><a href="#invoice" class="nav-link" onclick="showPage('invoice')">Invoice</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard -->
+        <section id="dashboard" class="page active">
+            <h1>Dashboard</h1>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Total Bookings</h3>
+                    <p class="stat">0</p>
+                </div>
+                <div class="card">
+                    <h3>Pending Quotations</h3>
+                    <p class="stat">0</p>
+                </div>
+                <div class="card">
+                    <h3>Total Revenue</h3>
+                    <p class="stat">$0</p>
+                </div>
+                <div class="card">
+                    <h3>Active Itineraries</h3>
+                    <p class="stat">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products -->
+        <section id="products" class="page">
+            <h1>Products</h1>
+            <button class="btn-primary" onclick="openProductForm()">Add New Product</button>
+            <div id="productsList" class="products-grid"></div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="page">
+            <h1>Pricing Management</h1>
+            <button class="btn-primary" onclick="openPricingForm()">Add Pricing Tier</button>
+            <div id="pricingList" class="pricing-table"></div>
+        </section>
+
+        <!-- Calendar -->
+        <section id="calendar" class="page">
+            <h1>Booking Calendar</h1>
+            <div id="calendar-container"></div>
+        </section>
+
+        <!-- Itinerary Builder -->
+        <section id="itinerary" class="page">
+            <h1>Itinerary Builder</h1>
+            <button class="btn-primary" onclick="openItineraryBuilder()">Create New Itinerary</button>
+            <div id="itineraryList"></div>
+        </section>
+
+        <!-- Quotation -->
+        <section id="quotation" class="page">
+            <h1>Quotation Management</h1>
+            <button class="btn-primary" onclick="openQuotationForm()">Create Quotation</button>
+            <div id="quotationList"></div>
+        </section>
+
+        <!-- Invoice -->
+        <section id="invoice" class="page">
+            <h1>Invoice Management</h1>
+            <button class="btn-primary" onclick="openInvoiceForm()">Create Invoice</button>
+            <div id="invoiceList"></div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="public/js/main.js"></script>
+    <script src="public/js/products.js"></script>
+    <script src="public/js/pricing.js"></script>
+    <script src="public/js/calendar.js"></script>
+    <script src="public/js/itinerary.js"></script>
+    <script src="public/js/quotation.js"></script>
+    <script src="public/js/invoice.js"></script>
+    <script src="public/js/pdf-generator.js"></script>
+    <script src="public/js/email-service.js"></script>
+</body>
+</html>
